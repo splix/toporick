@@ -1,0 +1,78 @@
+= Toporiq
+
+Ethereum Smart Contract for storing signatures of something in blockchain.
+
+Like "_keep md5 of this file forever_". Which could be used as a distributed db of signatures, to verify
+ downloads, or as a proof of something, or used from other contacts for validation/agreements and so on.
+
+== Simple Sign contact
+
+Made for self educational purpose, and not finished yet. At this moment there're only once super simple
+ contract: `SimpleSign`.
+
+It allows to:
+
+ * create a _document_ in blockchain
+ * add unlimited amount of _signatures_ to this document
+ * signature consists of:
+ ** _singType_ - a name for signature. ASCII bytes, up to 16 characters long
+ ** _sign_ - signature value, a byte array
+ * only document author can add signatures to a document
+
+Contract is deployed at address: 0x0000 < NOT YET >
+
+Notice that `singType` and `sign` could be anything, not restricted to any particular hash name and value.
+  May be a "filename=<filename bytes>", or anything.
+
+.Example 1, with standard signatures
+|=======================================================
+2+| Document 1001
+| SHA256     | 4a50dbce1d08d3299a7bada8654ee1bc43ec8fe5f7c9b468b5ae85f89c663214
+| SHA512     | c9a73eaf0d4b779ad790fd3e558412eaa2dba774bff85084d58b954025e49d5d fc33c9d8fff9eecc69538205cddeaff584c8fef189ee809ad2be71b1d7de549e
+|=======================================================
+
+
+.Example 2, with additional information about the document
+|=======================================================
+2+| Document 1002
+| Type       | _< File >_
+| Filename   | _< README.adoc >_
+| Size       | 320E0
+| MD5        | 22644302c3e19ebe6dec2a59e388bfe8
+| SHA1       | ee95bc49e493409d43226fa8a8024d79561fdbab
+|=======================================================
+
+
+== Dapp UI
+
+App is made using ConsenSys Truffle and React + Redux.
+
+=== Build and Run UI
+
+.Install requirements
+----
+npm install -g truffle
+npm install
+----
+
+.Start test RPC
+----
+./node_modules/ethereumjs-testrpc/bin/testrpc
+----
+
+.Deploy contract
+----
+truffle deploy
+----
+
+.Run app
+----
+truffle serve
+----
+
+Here we are
+
+image::example.png[UI]
+
+
+== Todo
