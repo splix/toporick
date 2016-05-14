@@ -6,10 +6,11 @@ import { showDocument } from '../store/show'
 import { loadSignatures } from '../store/signatures'
 
 const DocMini = ({doc, onSelect}) => {
-    doc = doc || {idNumeric: '?'};
+    doc = doc || {id: '?'};
     return (
         <tr onClick={e => {e.preventDefault(); onSelect(doc)}}>
-            <td>{doc.idNumeric}</td>
+            <td>{doc.index}</td>
+            <td>{doc.id}</td>
             <td>{doc.organizer}</td>
             <td>{doc.signsCount}</td>
         </tr>

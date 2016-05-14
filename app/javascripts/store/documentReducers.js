@@ -44,13 +44,16 @@ function setDocument(state, action) {
         case 'DOCUMENTS/SET_DOCUMENT':
             const document = action.document;
             return state.updateIn(['docList', 'items'], (items) => {
-                const index = items.findIndex((i) => i.get('id') === document.id);
+                const index = items.findIndex((i) =>
+                    i.get('id') === document.id || i.get('index') === document.index
+                );
                 if (index === -1) {
                     return items
                 }
                 return items.update(index, (i) => Immutable.fromJS(document))
             }).update('doc', (doc) =>
                 doc.set('id', document.id)
+                    .set('index', document.index)
                     .set('loaded', true)
                     .set('loading', false)
                     .set('document', Immutable.fromJS(document))

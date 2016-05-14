@@ -10,7 +10,7 @@ function updateSignature(details) {
 }
 
 export function loadSignature(doc, i) {
-    log.debug('load signature', doc.id.toNumber(), i);
+    log.debug('load signature', doc.id, i);
     return function (dispatch) {
         dispatch(updateSignature({id: i}));
 
@@ -31,7 +31,7 @@ export function loadSignature(doc, i) {
 }
 
 export function loadSignatures(doc) {
-    log.debug('load signatures', doc.id.toNumber(), doc.signsCount);
+    log.debug('load signatures', doc.id, doc.signsCount);
     return function (dispatch) {
         _.map(_.range(0, doc.signsCount), (i) => {
             dispatch(loadSignature(doc, i));

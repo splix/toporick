@@ -2,11 +2,11 @@ contract SimpleSign {
 
     event Created(
         address indexed from,
-        uint id
+        bytes32 id
     );
     event Signed(
         address indexed from,
-        uint docId,
+        bytes32 docId,
         uint id,
         bytes16 signType,
         bytes sign
@@ -14,8 +14,9 @@ contract SimpleSign {
 
     address owner;
 
-    mapping (uint => Document) documents;
+    mapping (bytes32 => Document) documents;
     uint documentsCount;
+    mapping (uint => bytes32) ids;
 
     struct Document {
         address organizer;
@@ -33,45 +34,55 @@ contract SimpleSign {
         owner = msg.sender;
     }
 
-    function createDocument() returns (uint docId) {
-        docId = documentsCount++;
+    function createDocument(uint nonce) returns (bytes32 docId) {
+        docId = generateId(nonce);
+        if (documents[docId].organizer != 0) throw;
+        uint index = documentsCount++;
+        ids[index] = docId;
         documents[docId] = Document(msg.sender, 0);
         Created(msg.sender, docId);
     }
 
-    function addSignature(uint id, bytes16 _type, bytes _sign) {
-        if (id > documentsCount - 1) throw;
-        Document doc = documents[id];
+    function addSignature(bytes32 docId, bytes16 _type, bytes _sign) {
+        Document doc = documents[docId];
         if (doc.organizer != msg.sender) throw;
         uint idx = doc.signsCount++;
         doc.signs[idx] = Sign(msg.sender, _type, _sign);
-        Signed(msg.sender, id, idx, _type, _sign);
+        Signed(msg.sender, docId, idx, _type, _sign);
     }
 
     function getDocumentsCount() returns (uint) {
         return documentsCount;
     }
 
-    function getDocumentDetails(uint docId) returns (address organizer, uint count) {
+    function getDocumentDetails(bytes32 docId) returns (address organizer, uint count) {
         Document doc = documents[docId];
         organizer = doc.organizer;
         count = doc.signsCount;
     }
 
-    function getSignsCount(uint docId) returns (uint) {
+    function getSignsCount(bytes32 docId) returns (uint) {
         return documents[docId].signsCount;
     }
 
-    function getSignDetails(uint docId, uint signId) returns (address, bytes16) {
+    function getSignDetails(bytes32 docId, uint signId) returns (address, bytes16) {
         Document doc = documents[docId];
         Sign s = doc.signs[signId];
         return (s.signer, s.signType);
     }
 
-    function getSignData(uint docId, uint signId) returns (bytes) {
+    function getSignData(bytes32 docId, uint signId) returns (bytes) {
         Document doc = documents[docId];
         Sign s = doc.signs[signId];
         return s.sign;
+    }
+
+    function generateId(uint nonce) returns (bytes32) {
+        return sha3(msg.sender, nonce);
+    }
+
+    function getIdAtIndex(uint index) returns (bytes32) {
+        return ids[index];
     }
 
 }

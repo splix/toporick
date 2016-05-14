@@ -14,8 +14,10 @@ const Render = ({doc}) => {
         <div id="document-details">
             <div className="row">
                 <dl className="dl-horizontal">
+                    <dt>Index</dt>
+                    <dd>{doc.index}</dd>
                     <dt>ID</dt>
-                    <dd>{doc.id.toNumber()}</dd>
+                    <dd>{doc.id}</dd>
                 </dl>
             </div>
             <SignList />

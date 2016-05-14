@@ -10,12 +10,6 @@ function requestDocuments() {
     }
 }
 
-function getDocumentsCount() {
-    return new Promise((resolve, reject) => {
-
-    });
-}
-
 function setDocuments(docs) {
     return {
         type: "DOCUMENTS/SET_ITEMS",
@@ -30,21 +24,27 @@ function setDocument(doc) {
     }
 }
 
-function fetchDocument(id) {
+function fetchDocumentById(index, id) {
     return function (dispatch) {
-        contract.getDocumentDetails.call(id).then(function(resp) {
-            log.debug('got doc details', arguments);
+        contract.getDocumentDetails.call(id).then((resp) => {
+            log.debug('got doc details', index, id, resp);
             var doc = {
                 id: id,
-                idNumeric: id.toNumber(),
+                index: index,
                 organizer: resp[0],
                 signsCount: resp[1].toNumber()
             };
             dispatch(setDocument(doc));
             dispatch(loadSignatures(doc));
-        }).catch(function(err) {
-            log.error(err)
-        });        
+        });
+    }
+}
+
+function fetchDocumentByIndex(index) {
+    return function (dispatch) {
+        contract.getIdAtIndex.call(web3.toBigNumber(index)).then((id) => {
+            dispatch(fetchDocumentById(index, id))
+        });
     }
 }
 
@@ -61,11 +61,13 @@ export default function fetchDocuments() {
                 start = 0;
             }
             log.debug('get documents', start, nmax);
-            const emptyDocs = _.range(start, nmax).map( (id) => {
-                return {id: web3.toBigNumber(id)}
+            const emptyDocs = _.range(start, nmax).map( (index) => {
+                return {index: index}
             });
             dispatch(setDocuments(emptyDocs));
-            emptyDocs.map((doc) => dispatch(fetchDocument(doc.id)));
+            emptyDocs.map((doc) =>
+                dispatch(fetchDocumentByIndex(doc.index))
+            );
         });
     }
 }

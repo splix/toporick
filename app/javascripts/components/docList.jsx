@@ -11,6 +11,7 @@ const DocList = ({items, onCreate}) => {
     var table = <table className="table">
         <thead>
             <tr>
+                <th>Index</th>
                 <th>ID</th>
                 <th>Author</th>
                 <th>Signatures</th>
