@@ -1,6 +1,6 @@
 = Toporiq
 
-Ethereum Smart Contract for storing signatures of something in blockchain.
+Ethereum Smart Contract for storing signatures of off-chain entities in blockchain.
 
 Like "_keep md5 of this file forever_". Which could be used as a distributed db of signatures, to verify
  downloads, or as a proof of something, or used from other contacts for validation/agreements and so on.
@@ -15,14 +15,14 @@ It allows to:
  * create a _document_ in blockchain
  * add unlimited amount of _signatures_ to this document
  * signature consists of:
- ** _singType_ - a name for signature. ASCII bytes, up to 16 characters long
- ** _sign_ - signature value, a byte array
+ ** _type_  - a name for signature. ASCII bytes, up to 16 characters long
+ ** _value_ - signature value, a byte array
  * only document author can add signatures to a document
 
 Contract is deployed at address: 0x0000 < NOT YET >
 
-Notice that `singType` and `sign` could be anything, not restricted to any particular hash name and value.
-  May be a "filename=<filename bytes>", or anything.
+Notice that `type` and `value` could be anything, not restricted to any particular hash name and value.
+  Which allows to store ordinary key-value pairs here. May be a "_filename=<filename bytes>_", or anything.
 
 .Example 1, with standard signatures
 |=======================================================
@@ -45,7 +45,7 @@ Notice that `singType` and `sign` could be anything, not restricted to any parti
 
 == Dapp UI
 
-App is made using ConsenSys Truffle and React + Redux.
+App is built using ConsenSys Truffle and React + Redux.
 
 === Build and Run UI
 
@@ -74,5 +74,6 @@ Here we are
 
 image::example.png[UI]
 
+== Licence
 
-== Todo
+The project is created with educational purposes. Do whatever you want with this code.
