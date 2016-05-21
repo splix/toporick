@@ -112,4 +112,47 @@ contract('SimpleSign', function(accounts) {
 
   });
 
+  it("add 101 signatures", function(done) {
+    var meta = SimpleSign.deployed();
+    var docId = null;
+    const nonce = web3.toBigNumber('0x105');
+
+    meta.generateId.call(nonce, accounts[0]).then(function(_docId) {
+      docId = _docId;
+      return meta.createDocument(nonce, {from: accounts[0]});
+    }).then(function(tx_id) {
+      return meta.getDocumentDetails.call(docId)
+    }).then(function (currentDocument) {
+      assert.equal(0, currentDocument[1].toNumber());
+      var actions = [];
+      for (var i = 0; i < 101; i++) {
+        var x = ["hash", i].join('_');
+        var type = web3.toBigNumber(web3.fromAscii(x, 16));
+        var sign = '0x'+web3.sha3(x);
+        actions.push(meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000}));
+      }
+      return Promise.all(actions);
+    }).then(function(x) {
+      return meta.getDocumentDetails.call(docId);
+    }).then(function(currentDocument) {
+      assert.equal(101, currentDocument[1].toNumber());
+      var signatures = [];
+      for (var i = 0; i < 101; i++) {
+        signatures.push(meta.getSignData.call(docId, web3.toBigNumber(i)));
+      }
+      return Promise.all(signatures)
+    }).then(function (signatures) {
+      // console.log('all hashes', signatures);
+      assert.include(signatures, '0x' + web3.sha3('hash_0'));
+      assert.include(signatures, '0x' + web3.sha3('hash_1'));
+      assert.include(signatures, '0x' + web3.sha3('hash_10'));
+      assert.include(signatures, '0x' + web3.sha3('hash_100'));
+      assert.include(signatures, '0x' + web3.sha3('hash_99'));
+      assert.include(signatures, '0x' + web3.sha3('hash_50'));
+      assert.include(signatures, '0x' + web3.sha3('hash_25'));
+      assert.include(signatures, '0x' + web3.sha3('hash_26'));
+    }).then(done).catch(done)
+
+  });
+
 });
