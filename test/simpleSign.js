@@ -22,7 +22,7 @@ contract('SimpleSign', function(accounts) {
       assert.equal(0, currentDocument[1].toNumber());
 
       const type = web3.toBigNumber(web3.fromAscii('md5', 16));
-      const sign = web3.toBigNumber('0x22644302c3e19ebe6dec2a59e388bfe8');
+      const sign = '0x22644302c3e19ebe6dec2a59e388bfe8';
       return meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000});
     }).then(function(tx_id) {
       return meta.getDocumentDetails.call(docId);
@@ -36,7 +36,7 @@ contract('SimpleSign', function(accounts) {
 
       return meta.getSignData.call(docId, web3.toBigNumber(0));
     }).then(function(signature) {
-      assert.equal('0x22644302c3e19ebe6dec2a59e388bfe8', web3.toHex(signature));
+      assert.equal(web3.toHex(signature), '0x22644302c3e19ebe6dec2a59e388bfe8');
     }).then(done).catch(done);
 
   });
@@ -50,7 +50,7 @@ contract('SimpleSign', function(accounts) {
     const nonce = web3.toBigNumber('0x103');
 
     const type = web3.toBigNumber(web3.fromAscii('md5', 16));
-    const sign = web3.toBigNumber('0x22644302c3e19ebe6dec2a59e388bfe8');
+    const sign = '0x22644302c3e19ebe6dec2a59e388bfe8';
     var docId = null;
 
     meta.generateId.call(nonce, other).then(function(_docId) {
@@ -84,7 +84,7 @@ contract('SimpleSign', function(accounts) {
       assert.equal(0, currentDocument[1].toNumber());
 
       const type = web3.toBigNumber(web3.fromAscii('md5', 16));
-      const sign = web3.toBigNumber('0x22644302c3e19ebe6dec2a59e388bfe8');
+      const sign = '0x22644302c3e19ebe6dec2a59e388bfe8';
       return meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000});
     }).then(function(tx_id) {
       return meta.getDocumentDetails.call(docId)
@@ -92,7 +92,7 @@ contract('SimpleSign', function(accounts) {
       assert.equal(1, currentDocument[1].toNumber());
 
       const type = web3.toBigNumber(web3.fromAscii('sha512', 16));
-      const sign = web3.toBigNumber('0xc9a73eaf0d4b779ad790fd3e558412eaa2dba774bff85084d58b954025e49d5dfc33c9d8fff9eecc69538205cddeaff584c8fef189ee809ad2be71b1d7de549e');
+      const sign = '0xc9a73eaf0d4b779ad790fd3e558412eaa2dba774bff85084d58b954025e49d5dfc33c9d8fff9eecc69538205cddeaff584c8fef189ee809ad2be71b1d7de549e';
       return meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000});
     }).then(function(tx_id) {
       return meta.getDocumentDetails.call(docId);
@@ -101,13 +101,14 @@ contract('SimpleSign', function(accounts) {
 
       return meta.getSignData.call(docId, web3.toBigNumber(0));
     }).then(function (signatureFirst) {
-      assert.equal('0x22644302c3e19ebe6dec2a59e388bfe8', web3.toHex(signatureFirst));
+      assert.equal(web3.toHex(signatureFirst), '0x22644302c3e19ebe6dec2a59e388bfe8');
       return meta.getSignData.call(docId, web3.toBigNumber(1));
     }).then(function (signatureSecond) {
-      assert.equal('0xc9a73eaf0d4b779ad790fd3e558412ea' +
+      assert.equal(web3.toHex(signatureSecond),
+                   '0xc9a73eaf0d4b779ad790fd3e558412ea' +
                      'a2dba774bff85084d58b954025e49d5d' +
                      'fc33c9d8fff9eecc69538205cddeaff5' +
-                     '84c8fef189ee809ad2be71b1d7de549e', web3.toHex(signatureSecond));
+                     '84c8fef189ee809ad2be71b1d7de549e');
     }).then(done).catch(done);
 
   });
