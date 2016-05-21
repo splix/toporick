@@ -20,8 +20,7 @@ contract SimpleSign {
 
     struct Document {
         address organizer;
-        uint signsCount;
-        mapping (uint => Sign) signs;
+        Sign[] signs;
     }
 
     struct Sign {
@@ -39,15 +38,14 @@ contract SimpleSign {
         if (documents[docId].organizer != 0) throw;
         uint index = documentsCount++;
         ids[index] = docId;
-        documents[docId] = Document(msg.sender, 0);
+        documents[docId].organizer = msg.sender;
         Created(msg.sender, docId);
     }
 
     function addSignature(bytes32 docId, bytes16 _type, bytes _sign) {
         Document doc = documents[docId];
         if (doc.organizer != msg.sender) throw;
-        uint idx = doc.signsCount++;
-        doc.signs[idx] = Sign(msg.sender, _type, _sign);
+        uint idx = doc.signs.push(Sign(msg.sender, _type, _sign));
         Signed(msg.sender, docId, idx, _type, _sign);
     }
 
@@ -58,11 +56,11 @@ contract SimpleSign {
     function getDocumentDetails(bytes32 docId) returns (address organizer, uint count) {
         Document doc = documents[docId];
         organizer = doc.organizer;
-        count = doc.signsCount;
+        count = doc.signs.length;
     }
 
     function getSignsCount(bytes32 docId) returns (uint) {
-        return documents[docId].signsCount;
+        return documents[docId].signs.length;
     }
 
     function getSignDetails(bytes32 docId, uint signId) returns (address, bytes16) {
