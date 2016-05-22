@@ -1,3 +1,42 @@
+function waitTx(tx, minBlocks, maxBlocks) {
+  return new Promise(function (resolve, reject) {
+    var filter = web3.eth.filter('latest');
+    var txs = [];
+    if (typeof tx == 'string') {
+      txs.push(tx)
+    } else if (typeof tx == 'object') {
+      txs = tx
+    }
+    minBlocks = minBlocks || 1;
+    maxBlocks = Math.max(maxBlocks, 4, minBlocks+1);
+    var blocksWatched = 0;
+    filter.watch(function (error, blockHash) {
+      if (error) {
+        filter.stopWatching();
+        reject(error);
+        return;
+      }
+      blocksWatched++;
+      var count = web3.eth.getBlockTransactionCount(blockHash);
+      var blockTxs = [];
+      for (var i = 0; i < count; i++) {
+        var transaction = web3.eth.getTransactionFromBlock(blockHash, i);
+        blockTxs.push(transaction.hash);
+      }
+      // console.log('check', blockTxs, 'against', txs);
+      txs = txs.filter(function(tx) {
+        return blockTxs.indexOf(tx) < 0
+      });
+      // console.log('transactions to wait', txs.length, blocksWatched);
+      if ( blocksWatched >= maxBlocks ||
+          (blocksWatched >= minBlocks && txs.length == 0)) {
+        filter.stopWatching();
+        resolve('ok');
+      }
+    });
+  });
+}
+
 contract('SimpleSign', function(accounts) {
   
   it("create document", function(done) {
@@ -25,6 +64,8 @@ contract('SimpleSign', function(accounts) {
       const sign = '0x22644302c3e19ebe6dec2a59e388bfe8';
       return meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000});
     }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
       return meta.getDocumentDetails.call(docId);
     }).then(function(currentDocument) {
       assert.equal(1, currentDocument[1].toNumber());
@@ -46,6 +87,7 @@ contract('SimpleSign', function(accounts) {
 
     const me = accounts[0];
     const other = accounts[1];
+    assert.isNotNull(other, 'we need 2 accounts for tests');
     assert.notEqual(me, other, "Different accounts");
     const nonce = web3.toBigNumber('0x103');
 
@@ -57,17 +99,16 @@ contract('SimpleSign', function(accounts) {
       docId = _docId;
       return meta.createDocument(nonce, {from: other});
     }).then(function(tx_id) {
-      meta.addSignature(docId, type, sign, {from: me, gas: 2000000}).then(function() {
-        try {
-          assert.fail('executed', 'should not be executed', 'should not execute');
-        } catch (e) {
-          done(e);
-        }
-      }).catch(function(res) {
-        assert.include(res.message, 'VM Exception while executing transaction: invalid JUMP');
-        done();
-      });
-    }).catch(done);
+      return waitTx(tx_id);
+    }).then(function() {
+      return meta.addSignature(docId, type, sign, {from: me, gas: 2000000});
+    }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
+      return meta.getDocumentDetails.call(docId)
+    }).then(function (currentDocument) {
+      assert.equal(0, currentDocument[1].toNumber());
+    }).then(done).catch(done);
   });
 
   it("add few signatures", function (done) {
@@ -79,6 +120,8 @@ contract('SimpleSign', function(accounts) {
       docId = _docId;
       return meta.createDocument(nonce, {from: accounts[0]});
     }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
       return meta.getDocumentDetails.call(docId)
     }).then(function (currentDocument) {
       assert.equal(0, currentDocument[1].toNumber());
@@ -87,6 +130,8 @@ contract('SimpleSign', function(accounts) {
       const sign = '0x22644302c3e19ebe6dec2a59e388bfe8';
       return meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000});
     }).then(function(tx_id) {
+      return waitTx(tx_id, 2);
+    }).then(function() {
       return meta.getDocumentDetails.call(docId)
     }).then(function(currentDocument) {
       assert.equal(1, currentDocument[1].toNumber());
@@ -95,6 +140,8 @@ contract('SimpleSign', function(accounts) {
       const sign = '0xc9a73eaf0d4b779ad790fd3e558412eaa2dba774bff85084d58b954025e49d5dfc33c9d8fff9eecc69538205cddeaff584c8fef189ee809ad2be71b1d7de549e';
       return meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000});
     }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
       return meta.getDocumentDetails.call(docId);
     }).then(function(currentDocument) {
       assert.equal(2, currentDocument[1].toNumber());
@@ -122,6 +169,8 @@ contract('SimpleSign', function(accounts) {
       docId = _docId;
       return meta.createDocument(nonce, {from: accounts[0]});
     }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
       return meta.getDocumentDetails.call(docId)
     }).then(function (currentDocument) {
       assert.equal(0, currentDocument[1].toNumber());
@@ -133,7 +182,9 @@ contract('SimpleSign', function(accounts) {
         actions.push(meta.addSignature(docId, type, sign, {from: accounts[0], gas: 2000000}));
       }
       return Promise.all(actions);
-    }).then(function(x) {
+    }).then(function(txs) {
+      return waitTx(txs, 5, 10);
+    }).then(function() {
       return meta.getDocumentDetails.call(docId);
     }).then(function(currentDocument) {
       assert.equal(101, currentDocument[1].toNumber());
