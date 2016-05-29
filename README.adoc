@@ -76,4 +76,4 @@ image::example.png[UI]
 
 == Licence
 
-The project is created with educational purposes. Do whatever you want with this code.
+MIT
