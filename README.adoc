@@ -1,27 +1,43 @@
-= Toporiq
+= Toporick
 
-Ethereum Smart Contract for storing signatures of off-chain entities in blockchain.
+Toporick is an Ethereum Smart Contract for storing signatures of off-chain entities in blockchain. This
+could be a signatures of digital documents, images, PDF or any other file.
 
-Like "_keep md5 of this file forever_". Which could be used as a distributed db of signatures, to verify
- downloads, or as a proof of something, or used from other contacts for validation/agreements and so on.
+The plan is to make a collection of Smart Contracts, which will be helpful for making an agreement
+based on references to the off-chain digital documents.
 
-== Simple Sign contact
+Roadmap:
 
-Made for self educational purpose, and not finished yet. At this moment there're only once super simple
- contract: `SimpleSign`.
+  1. [X] publish signatures to blockchain - Simple Signature
+  2. [ ] add signatures from multiple parties
+  3. [ ] verification of signatures
+  4. [ ] smart agreement based on state of signatures
+
+== Simple Signature contract
+
+Contract is deployed at address: 0x0000 < NOT YET >
+
+Supposed to be used as a distributed storage for digital signatures. Like "_keep md5 of this file forever_".
+
+Use case:
+
+ * to publish signatures of a downloadable file (like what we have for Ethereum client itself, published on
+ official repo. Now it can also be published in blockchain)
+ * signature of a correct file before making it public, as a proof of own/existence
+
+Notice that unlike to existing way of publishing such signatures on a website/ftp, publishing to blockchain through
+   Toporick, protect signatures from forgery. Once it published on blockchain, it stays here forever.
 
 It allows to:
 
- * create a _document_ in blockchain
- * add unlimited amount of _signatures_ to this document
- * signature consists of:
+ * create a _document_
+ * add an unlimited number of _signatures_ to this document
+ * the signature consists of:
  ** _type_  - a name for signature. ASCII bytes, up to 16 characters long
  ** _value_ - signature value, a byte array
  * only document author can add signatures to a document
 
-Contract is deployed at address: 0x0000 < NOT YET >
-
-Notice that `type` and `value` could be anything, not restricted to any particular hash name and value.
+Notice that `type` and `value` could be anything, not restricted to any particular hash name or value.
   Which allows to store ordinary key-value pairs here. May be a "_filename=<filename bytes>_", or anything.
 
 .Example 1, with standard signatures
@@ -45,7 +61,8 @@ Notice that `type` and `value` could be anything, not restricted to any particul
 
 == Dapp UI
 
-App is built using ConsenSys Truffle and React + Redux.
+There're a standalone UI to operate this contracts, that can be run on any computer with access to Ethereum node
+via RPC. The app is built using ConsenSys Truffle and React + Redux.
 
 === Build and Run UI
 
