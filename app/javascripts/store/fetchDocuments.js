@@ -1,4 +1,3 @@
-import {web3, contract} from './contract';
 import log from 'loglevel';
 import _ from 'lodash';
 import {loadSignatures} from './signatures'
@@ -25,7 +24,8 @@ function setDocument(doc) {
 }
 
 function fetchDocumentById(index, id) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
+        const contract = getState().contracts.simpleSign;
         contract.getDocumentDetails.call(id).then((resp) => {
             log.debug('got doc details', index, id, resp);
             var doc = {
@@ -41,7 +41,9 @@ function fetchDocumentById(index, id) {
 }
 
 function fetchDocumentByIndex(index) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
+        const contract = getState().contracts.simpleSign;
+        const web3 = getState().contracts.web3;
         contract.getIdAtIndex.call(web3.toBigNumber(index)).then((id) => {
             dispatch(fetchDocumentById(index, id))
         });
@@ -50,9 +52,10 @@ function fetchDocumentByIndex(index) {
 
 export default function fetchDocuments() {
 
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(requestDocuments());
         // log.debug('contact', contract);
+        const contract = getState().contracts.simpleSign;
         contract.getDocumentsCount.call().then(function(count) {
             const nmax = count.toNumber();
             const n = 10;

@@ -7,13 +7,18 @@ import signatureReducers from './signaturesReducers'
 import initialState from './initalState'
 import Immutable from 'immutable'
 import {reducer as formReducer} from 'redux-form';
-
+import { configReducers } from './configReducers';
+import { setAddress } from './config';
+import { loadAccounts } from './contract';
+import { contractReducers } from './contractReducers';
 import fetchDocuments from '../store/fetchDocuments';
 
 const stateTransformer = (state) => {
     return {
         app: state.app.toJS(), 
-        form: state.form
+        form: state.form,
+        config: state.config.toJS(),
+        contracts: state.contracts
     };
 };
 
@@ -31,7 +36,9 @@ const appReducers = function(state, action) {
 
 const reducers = {
     app: appReducers,
-    form: formReducer
+    form: formReducer,
+    config: configReducers,
+    contracts: contractReducers
 };
 
 export const store = createStore(
@@ -42,5 +49,7 @@ export const store = createStore(
     )
 );
 
+store.dispatch(setAddress('http://localhost:8545'));
+store.dispatch(loadAccounts());
 store.dispatch(fetchDocuments());
 

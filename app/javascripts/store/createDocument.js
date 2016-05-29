@@ -1,4 +1,3 @@
-import {web3, contract, accounts} from './contract';
 import log from 'loglevel';
 import fetchDocuments from './fetchDocuments';
 
@@ -7,11 +6,14 @@ var sequence = 100;
 
 export default function createDocument() {
 
-    return function (dispatch) {
+    return function (dispatch, getState) {
         sequence++;
         const nonce = ['0x', instance, sequence.toString(16)].join('');
-        log.debug('nonce', nonce);
-        contract.createDocument(web3.toBigNumber(nonce), {from: accounts[0]}).then((tx_id) => {
+        const contract = getState().contracts.simpleSign;
+        const web3 = getState().contracts.web3;
+        const account = getState().config.get('account');
+        log.debug('create doc', nonce, account);
+        contract.createDocument(web3.toBigNumber(nonce), {from: account}).then((tx_id) => {
             log.info('document created', tx_id);
             dispatch(fetchDocuments());
         });
