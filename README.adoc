@@ -1,17 +1,22 @@
 = Toporick
 
-Toporick is an Ethereum Smart Contract for storing signatures of off-chain entities in blockchain. This
-could be a signatures of digital documents, images, PDF or any other file.
+Toporick is an Ethereum DApp for making agreements based on signatures of off-chain entities in the blockchain.
+This can be signatures of digital documents, images, PDF or any other file.
 
 The plan is to make a collection of Smart Contracts, which will be helpful for making an agreement
 based on references to the off-chain digital documents.
 
 Roadmap:
 
-  1. [X] publish signatures to blockchain - Simple Signature
-  2. [ ] add signatures from multiple parties
-  3. [ ] verification of signatures
-  4. [ ] smart agreement based on state of signatures
+  * [x] publish signatures to blockchain - Simple Signature
+  * [ ] add signatures from multiple parties
+  * [ ] publish UI
+  * [ ] verification rules for a document
+  ** [ ] timeframe
+  ** [ ] same signatures from multiple parties
+  ** [ ] required types of signatures
+  * [ ] integrate into Mist
+  * [ ] command line tools
 
 == Simple Signature contract
 
@@ -21,12 +26,12 @@ Supposed to be used as a distributed storage for digital signatures. Like "_keep
 
 Use case:
 
- * to publish signatures of a downloadable file (like what we have for Ethereum client itself, published on
- official repo. Now it can also be published in blockchain)
- * signature of a correct file before making it public, as a proof of own/existence
+ * publish signatures of a downloadable file for a validation (like what we have for Ethereum client itself, published on
+ official repo; now it can also be published into blockchain)
+ * demonstrate proof of document existence at a point of time
 
 Notice that unlike to existing way of publishing such signatures on a website/ftp, publishing to blockchain through
-   Toporick, protect signatures from forgery. Once it published on blockchain, it stays here forever.
+   Toporick, it protects signatures from forgery. Once it published on blockchain, it stays here forever.
 
 It allows to:
 
@@ -38,7 +43,7 @@ It allows to:
  * only document author can add signatures to a document
 
 Notice that `type` and `value` could be anything, not restricted to any particular hash name or value.
-  Which allows to store ordinary key-value pairs here. May be a "_filename=<filename bytes>_", or anything.
+  Which allows to store ordinary key-value pairs here. May be a metadata like "_filename=<filename in ascii>_".
 
 .Example 1, with standard signatures
 |=======================================================
