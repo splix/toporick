@@ -6,7 +6,8 @@ import _ from 'lodash';
 
 const initialState = {
     web3: null,
-    simpleSign: null
+    simpleSign: null,
+    filter: null
 };
 
 function connectWeb3(state, action) {
@@ -25,8 +26,22 @@ function connectWeb3(state, action) {
     }
 }
 
+function setFilter(state, action) {
+    switch (action.type) {
+        case 'CONTRACT/SET_FILTER':
+            if (state.filter !== null) {
+                state.filter.stopWatching();
+            }
+            return _.assign(initialState, state,
+                {filter: action.filter});
+        default:
+            return state
+    }
+}
+
 export const contractReducers = function(state, action) {
     state = state || initialState;
     state = connectWeb3(state, action);
+    state = setFilter(state, action);
     return state;
 };

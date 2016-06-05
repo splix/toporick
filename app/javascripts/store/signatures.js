@@ -1,5 +1,6 @@
 import log from 'loglevel'
 import _ from 'lodash'
+import { startSignatureTransaction } from './transactions'
 
 function updateSignature(details) {
     return {
@@ -15,16 +16,24 @@ export function loadSignature(doc, i) {
         const contract = getState().contracts.simpleSign;
         const web3 = getState().contracts.web3;
         contract.getSignDetails.call(doc.id, web3.toBigNumber(i)).then((resp) => {
-            // log.debug('got sign details', resp);
+            log.debug('got sign details', resp);
+            if (resp[1] === '0x') { //doesn't exists or not in the blockchain
+                log.warn("Unknown signature", doc.id, i);
+                return
+            }
             dispatch(updateSignature({
                 id: i,
                 signer: resp[0],
                 type: web3.toAscii(resp[1])
             }));
-        });
-        contract.getSignData.call(doc.id, web3.toBigNumber(i)).then((resp) => {
-            // log.debug('got sign data', resp);
-            dispatch(updateSignature({id: i, sign: resp}));
+            contract.getSignData.call(doc.id, web3.toBigNumber(i)).then((resp) => {
+                log.debug('got sign data 2', resp);
+                if (resp === '0x') { //doesn't exists or not in the blockchain
+                    log.warn("Unknown signature", doc.id, i);
+                    return
+                }
+                dispatch(updateSignature({id: i, sign: resp}));
+            });
         });
     };
 
@@ -39,11 +48,11 @@ export function loadSignatures(doc) {
     };
 }
 
-export function createSignature(type, sign) {
+export function createSignature(typeOriginal, sign) {
 
     return function (dispatch, getState) {
         const web3 = getState().contracts.web3;
-        type = web3.toBigNumber(type);
+        const type = web3.toBigNumber(typeOriginal);
         const doc = getState().app.getIn(['doc', 'document']).toJS();
         const docId = doc.id;
         const contract = getState().contracts.simpleSign;
@@ -59,8 +68,10 @@ export function createSignature(type, sign) {
                 documentId: docId
             });
             const singsCount = doc.signsCount + 1;
-            updateSignature({id: singsCount-1});
-            dispatch(loadSignature(doc, singsCount - 1));
+            var signId = singsCount - 1;
+            dispatch(startSignatureTransaction(tx_id, docId, signId));
+            dispatch(updateSignature({id: signId, type: web3.toAscii(typeOriginal)}));
+            dispatch(loadSignature(doc, signId));
         // }).catch((e) => {
         //     log.error("failed to create signature: ", e);
             // dispatch(error('failed to create signature: ' + e));

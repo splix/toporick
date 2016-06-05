@@ -1,6 +1,14 @@
 import Immutable from 'immutable'
 
-const state = {
+export const transactionTemplate = Immutable.fromJS({
+    id: null,
+    seen: false,
+    block: null,
+    type: null,
+    documentId: null
+});
+
+export const initialState = Immutable.fromJS({
     doc: {
         id: null,
         loading: false,
@@ -22,7 +30,6 @@ const state = {
     addSignature: {
         type: '',
         signature: ''
-    }
-};
-
-export default Immutable.fromJS(state)
+    },
+    transactions: []
+});

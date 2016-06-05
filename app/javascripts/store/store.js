@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import documentsReducers from './documentReducers'
 import showReducers from './showReducers'
 import signatureReducers from './signaturesReducers'
-import initialState from './initalState'
+import { initialState } from './initalState'
 import Immutable from 'immutable'
 import {reducer as formReducer} from 'redux-form';
 import { configReducers } from './configReducers';
@@ -12,6 +12,8 @@ import { setAddress } from './config';
 import { loadAccounts } from './contract';
 import { contractReducers } from './contractReducers';
 import fetchDocuments from '../store/fetchDocuments';
+import { startWatcher } from './transactions';
+import transactionReducers from './transactionsReducers';
 
 const stateTransformer = (state) => {
     return {
@@ -31,6 +33,7 @@ const appReducers = function(state, action) {
     state = documentsReducers(state, action);
     state = showReducers(state, action);
     state = signatureReducers(state, action);
+    state = transactionReducers(state, action);
     return state
 };
 
@@ -52,4 +55,5 @@ export const store = createStore(
 store.dispatch(setAddress('http://localhost:8545'));
 store.dispatch(loadAccounts());
 store.dispatch(fetchDocuments());
+store.dispatch(startWatcher());
 
