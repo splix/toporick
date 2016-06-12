@@ -1,4 +1,4 @@
-contract SimpleSign {
+contract BasicSign {
 
     event Created(
         address indexed from,

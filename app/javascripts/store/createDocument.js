@@ -10,7 +10,7 @@ export default function createDocument() {
     return function (dispatch, getState) {
         sequence++;
         const nonce = ['0x', instance, sequence.toString(16)].join('');
-        const contract = getState().contracts.simpleSign;
+        const contract = getState().contracts.basicSign;
         const web3 = getState().contracts.web3;
         const account = getState().config.get('account');
         log.debug('create doc', nonce, account);

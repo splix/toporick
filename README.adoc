@@ -8,7 +8,7 @@ based on references to the off-chain digital documents.
 
 Roadmap:
 
-  * [x] publish signatures to blockchain - Simple Signature
+  * [x] publish signatures to blockchain - Basic Signature
   * [ ] add signatures from multiple parties
   * [ ] publish UI
   * [ ] verification rules for a document
@@ -18,7 +18,7 @@ Roadmap:
   * [ ] integrate into Mist
   * [ ] command line tools
 
-== Simple Signature contract
+== Basic Signature contract
 
 Contract is deployed at address: 0x0000 < NOT YET >
 

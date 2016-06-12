@@ -25,11 +25,12 @@ function setDocument(doc) {
 
 function fetchDocumentById(index, id) {
     return function (dispatch, getState) {
-        const contract = getState().contracts.simpleSign;
+        const contract = getState().contracts.basicSign;
         contract.getDocumentDetails.call(id).then((resp) => {
             log.debug('got doc details', index, id, resp);
             var doc = {
                 id: id,
+                idStr: id.toString(), 
                 index: index,
                 organizer: resp[0],
                 signsCount: resp[1].toNumber()
@@ -42,7 +43,7 @@ function fetchDocumentById(index, id) {
 
 function fetchDocumentByIndex(index) {
     return function (dispatch, getState) {
-        const contract = getState().contracts.simpleSign;
+        const contract = getState().contracts.basicSign;
         const web3 = getState().contracts.web3;
         contract.getIdAtIndex.call(web3.toBigNumber(index)).then((id) => {
             dispatch(fetchDocumentById(index, id))
@@ -55,7 +56,7 @@ export default function fetchDocuments() {
     return function (dispatch, getState) {
         dispatch(requestDocuments());
         // log.debug('contact', contract);
-        const contract = getState().contracts.simpleSign;
+        const contract = getState().contracts.basicSign;
         contract.getDocumentsCount.call().then(function(count) {
             const nmax = count.toNumber();
             const n = 10;

@@ -43,10 +43,10 @@ function waitTx(tx, minBlocks, maxBlocks) {
   });
 }
 
-contract('SimpleSign - create', function(accounts) {
+contract('BasicSign - create', function(accounts) {
 
   it("create document", function (done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
 
     meta.createDocument(web3.toBigNumber('0x101'), {from: accounts[0]}).then(function (tx_id) {
       assert.isNotNull(tx_id);
@@ -55,10 +55,10 @@ contract('SimpleSign - create', function(accounts) {
   });
 });
 
-contract('SimpleSign - signatures', function(accounts) {
+contract('BasicSign - signatures', function(accounts) {
 
   it("add signature", function (done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
     var docId = null;
 
     meta.generateId.call(web3.toBigNumber('0x102'), accounts[0]).then(function(_docId) {
@@ -92,7 +92,7 @@ contract('SimpleSign - signatures', function(accounts) {
   });
 
   it("cannot add signature to others document", function(done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
 
     const me = accounts[0];
     const other = accounts[1];
@@ -132,7 +132,7 @@ contract('SimpleSign - signatures', function(accounts) {
   });
 
   it("add few signatures", function (done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
     var docId = null;
     const nonce = web3.toBigNumber('0x104');
 
@@ -181,7 +181,7 @@ contract('SimpleSign - signatures', function(accounts) {
   });
 
   it("add 101 signatures", function(done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
     var docId = null;
     const nonce = web3.toBigNumber('0x105');
 
@@ -228,7 +228,7 @@ contract('SimpleSign - signatures', function(accounts) {
   });
 
   it("add signatures just after doc", function(done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
     var docId = null;
     const nonce = web3.toBigNumber('0x106');
 
@@ -271,10 +271,10 @@ contract('SimpleSign - signatures', function(accounts) {
 
 });
 
-contract('SimpleSign - remove', function(accounts) {
+contract('BasicSign - remove', function(accounts) {
 
   it("Owner can remove own document", function (done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
     var docId = null;
     var nonce = '0x102';
 
@@ -299,7 +299,7 @@ contract('SimpleSign - remove', function(accounts) {
   });
 
   it("Others cannot remove my document", function (done) {
-    var meta = SimpleSign.deployed();
+    var meta = BasicSign.deployed();
     var docId = null;
     var nonce = '0x102';
 

@@ -1,12 +1,12 @@
 import Web3 from "web3";
 import Pudding from "ether-pudding";
-import SimpleSign from "contracts/SimpleSign.sol.js";
+import BasicSign from "contracts/BasicSign.sol.js";
 import log from 'loglevel';
 import _ from 'lodash';
 
 const initialState = {
     web3: null,
-    simpleSign: null,
+    basicSign: null,
     filter: null
 };
 
@@ -17,10 +17,10 @@ function connectWeb3(state, action) {
             const addr = action.addr;
             Pudding.setWeb3(web3);
             web3.setProvider(new web3.providers.HttpProvider(addr));
-            SimpleSign.load(Pudding);
+            BasicSign.load(Pudding);
 
             return _.assign(initialState, state,
-                {web3: web3, simpleSign: SimpleSign.deployed()});
+                {web3: web3, basicSign: BasicSign.deployed()});
         default:
             return state
     }

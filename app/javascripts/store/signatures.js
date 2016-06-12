@@ -13,7 +13,7 @@ export function loadSignature(doc, i) {
     log.debug('load signature', doc.id, i);
     return function (dispatch, getState) {
         dispatch(updateSignature({id: i}));
-        const contract = getState().contracts.simpleSign;
+        const contract = getState().contracts.basicSign;
         const web3 = getState().contracts.web3;
         contract.getSignDetails.call(doc.id, web3.toBigNumber(i)).then((resp) => {
             log.debug('got sign details', resp);
@@ -55,7 +55,7 @@ export function createSignature(typeOriginal, sign) {
         const type = web3.toBigNumber(typeOriginal);
         const doc = getState().app.getIn(['doc', 'document']).toJS();
         const docId = doc.id;
-        const contract = getState().contracts.simpleSign;
+        const contract = getState().contracts.basicSign;
         const account = getState().config.get('account');
         contract.addSignature(docId, type, sign, {from: account, gas: 2000000}).then((tx_id) => {
             log.info('signature created', docId, type, sign, tx_id);

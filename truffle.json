@@ -1,7 +1,7 @@
 {
   "build": "webpack",
   "deploy": [
-    "SimpleSign"
+    "BasicSign"
   ],
   "rpc": {
     "host": "localhost",
