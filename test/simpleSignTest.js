@@ -43,16 +43,19 @@ function waitTx(tx, minBlocks, maxBlocks) {
   });
 }
 
-contract('SimpleSign - basics', function(accounts) {
-  
-  it("create document", function(done) {
+contract('SimpleSign - create', function(accounts) {
+
+  it("create document", function (done) {
     var meta = SimpleSign.deployed();
 
-    meta.createDocument(web3.toBigNumber('0x101'), {from: accounts[0]}).then(function(tx_id) {
+    meta.createDocument(web3.toBigNumber('0x101'), {from: accounts[0]}).then(function (tx_id) {
       assert.isNotNull(tx_id);
     }).then(done).catch(done);
 
   });
+});
+
+contract('SimpleSign - signatures', function(accounts) {
 
   it("add signature", function (done) {
     var meta = SimpleSign.deployed();
