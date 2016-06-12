@@ -43,6 +43,12 @@ contract SimpleSign {
         Created(msg.sender, docId);
     }
 
+    function removeDocument(uint256 docId) {
+        Document doc = documents[docId];
+        if (doc.organizer != msg.sender) throw;
+        delete documents[docId];
+    }
+
     function addSignature(uint256 docId, bytes16 _type, bytes _sign) {
         Document doc = documents[docId];
         if (doc.organizer != msg.sender) throw;

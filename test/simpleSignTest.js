@@ -43,7 +43,7 @@ function waitTx(tx, minBlocks, maxBlocks) {
   });
 }
 
-contract('SimpleSign', function(accounts) {
+contract('SimpleSign - basics', function(accounts) {
   
   it("create document", function(done) {
     var meta = SimpleSign.deployed();
@@ -262,6 +262,68 @@ contract('SimpleSign', function(accounts) {
       assert.include(signatures, '0x' + web3.sha3('hash2_40'));
       assert.include(signatures, '0x' + web3.sha3('hash2_49'));
     }).then(done).catch(done)
+
+  });
+
+
+});
+
+contract('SimpleSign - remove', function(accounts) {
+
+  it("Owner can remove own document", function (done) {
+    var meta = SimpleSign.deployed();
+    var docId = null;
+    var nonce = '0x102';
+
+    meta.generateId.call(nonce, accounts[0]).then(function(_docId) {
+      docId = _docId;
+      return meta.createDocument(nonce, {from: accounts[0]});
+    }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
+      return meta.getDocumentDetails.call(docId);
+    }).then(function(currentDocument) {
+      assert.equal(currentDocument[0], accounts[0]);
+      return meta.removeDocument(docId, {from: accounts[0]});
+    }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
+      return meta.getDocumentDetails.call(docId);
+    }).then(function(currentDocument) {
+      assert.equal(currentDocument[0], '0x0000000000000000000000000000000000000000');
+    }).then(done).catch(done);
+
+  });
+
+  it("Others cannot remove my document", function (done) {
+    var meta = SimpleSign.deployed();
+    var docId = null;
+    var nonce = '0x102';
+
+    meta.generateId.call(nonce, accounts[0]).then(function(_docId) {
+      docId = _docId;
+      return meta.createDocument(nonce, {from: accounts[0]});
+    }).then(function(tx_id) {
+      return waitTx(tx_id);
+    }).then(function() {
+      return meta.getDocumentDetails.call(docId);
+    }).then(function(currentDocument) {
+      assert.equal(currentDocument[0], accounts[0]);
+      return meta.removeDocument(docId, {from: accounts[1]});
+    }).then(function() {
+      done(new Error('Have successfully removed, but should not'));
+    }).catch(function(e) {
+      if (testReal) {
+        done(e)
+      } else {
+        try {
+          assert.include(e.message, 'VM Exception while executing transaction: invalid JUMP');
+          done();
+        } catch (e2) {
+          done(e2)
+        }
+      }
+    });
 
   });
 
