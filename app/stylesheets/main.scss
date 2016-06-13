@@ -1,3 +1,12 @@
+.header {
+  .navbar-default {
+    border: none;
+    border-bottom: 1px solid #aaa;
+    background-color: #fff;
+    border-radius: initial;
+    padding-bottom: 5px;
+  }
+}
 .body {
   min-height: 600px;
 }
