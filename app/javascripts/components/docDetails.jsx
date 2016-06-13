@@ -17,7 +17,7 @@ const Render = ({doc}) => {
                     <dt>Index</dt>
                     <dd>{doc.index}</dd>
                     <dt>ID</dt>
-                    <dd>{doc.id}</dd>
+                    <dd>{doc.idHex}</dd>
                 </dl>
             </div>
             <SignList />

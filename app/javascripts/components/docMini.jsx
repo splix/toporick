@@ -6,11 +6,10 @@ import { showDocument } from '../store/show'
 import { loadSignatures } from '../store/signatures'
 
 const DocMini = ({doc, onSelect}) => {
-    doc = doc || {id: '?'};
     return (
         <tr onClick={e => {e.preventDefault(); onSelect(doc)}}>
             <td>{doc.index}</td>
-            <td>{doc.id}</td>
+            <td>{doc.idHex}</td>
             <td>{doc.organizer}</td>
             <td>{doc.signsCount}</td>
         </tr>
@@ -19,7 +18,9 @@ const DocMini = ({doc, onSelect}) => {
 
 const DocumentsMini = connect(
     (state, ownProps) => {
-        return {}
+        return {
+            doc: ownProps.doc || {idHex: '0x0000', signsCount: 0}
+        }
     },
     (dispatch, ownProps) => {
         return {

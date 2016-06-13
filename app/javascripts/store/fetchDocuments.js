@@ -26,11 +26,12 @@ function setDocument(doc) {
 function fetchDocumentById(index, id) {
     return function (dispatch, getState) {
         const contract = getState().contracts.basicSign;
+        const web3 = getState().contracts.web3;
         contract.getDocumentDetails.call(id).then((resp) => {
             log.debug('got doc details', index, id, resp);
             var doc = {
                 id: id,
-                idStr: id.toString(), 
+                idHex: web3.toHex(id), 
                 index: index,
                 organizer: resp[0],
                 signsCount: resp[1].toNumber()

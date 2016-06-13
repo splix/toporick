@@ -20,7 +20,7 @@ const DocList = ({items, onCreate, onReload}) => {
         </thead>
         <tbody>
         {items.map( (doc) => {
-            return <DocMini doc={doc} key={doc.idNumeric}/>;
+            return <DocMini doc={doc} key={doc.idHex}/>;
         })}
         </tbody>
     </table>;
@@ -53,7 +53,7 @@ DocList.propTypes = {
 const DocumentsList = connect(
     (state, ownProps) => {
         return {
-            items: state.app.getIn(['docList', 'items']).toJS()
+            items: state.app.getIn(['docList', 'items']).toJS().filter((x) => typeof x === 'object')
         }
     },
     (dispatch, ownProps) => {
