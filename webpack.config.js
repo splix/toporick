@@ -59,7 +59,7 @@ var config = {
         alias: {
             'jquery': 'jquery/dist/jquery.js',
             'babel-polyfill': path.join(__dirname, 'babel-polyfill/dist/polyfill.js'),
-            'contracts': path.join(__dirname, 'environments/development/contracts')
+            'contracts': path.join(__dirname, 'environments/'+ environment + '/contracts')
         }
     },
     module: {
