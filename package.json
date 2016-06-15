@@ -40,7 +40,7 @@
     "bignumber.js": "2.3.0",
     "crypto-js": "3.1.6",
     "utf8": "2.1.1",
-    "ether-pudding": "3.0.3",
+    "ether-pudding": "2.0.9",
     "bluebird": "3.4.0",
     "process": "0.11.2",
     "ethereumjs-testrpc": "1.2.1",
