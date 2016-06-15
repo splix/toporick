@@ -313,8 +313,16 @@ contract('BasicSign - remove', function(accounts) {
     }).then(function(currentDocument) {
       assert.equal(currentDocument[0], accounts[0]);
       return meta.removeDocument(docId, {from: accounts[1]});
+    }).then(function(tx_id) {
+      return waitTx(tx_id);
     }).then(function() {
-      done(new Error('Have successfully removed, but should not'));
+      if (!testReal) {
+        done(new Error('Have successfully removed, but should not'));
+      }
+      return meta.getDocumentDetails.call(docId);
+    }).then(function(currentDocument) {
+      assert.equal(currentDocument[0], accounts[0]);
+      done();
     }).catch(function(e) {
       if (testReal) {
         done(e)
