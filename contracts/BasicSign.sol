@@ -77,4 +77,8 @@ contract BasicSign {
         return uint256(sha3(msg.sender, nonce));
     }
 
+    function () {
+        throw;
+    }
+
 }
