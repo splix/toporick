@@ -1,5 +1,4 @@
 import log from 'loglevel';
-import fetchDocuments from './fetchDocuments';
 import { startDocTransaction } from './transactions';
 
 const instance = Math.round(100000000 * Math.random()).toString(16);
@@ -19,7 +18,6 @@ export default function createDocument() {
             contract.generateId.call(web3.toBigNumber(nonce)).then((docId) => {
                 dispatch(startDocTransaction(tx_id, docId))
             });
-            dispatch(fetchDocuments());
         });
     }
     

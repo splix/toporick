@@ -48,7 +48,7 @@ function setDocument(state, action) {
                     i.get('id') === document.id || i.get('index') === document.index
                 );
                 if (index === -1) {
-                    return items
+                    return items.push(Immutable.fromJS(document))
                 }
                 return items.update(index, (i) => Immutable.fromJS(document))
             }).update('doc', (doc) =>

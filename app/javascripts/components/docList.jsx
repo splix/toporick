@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
 import createDocument from '../store/createDocument';
-import fetchDocuments from '../store/fetchDocuments';
 
 import log from 'loglevel';
 
 import DocMini from './docMini.jsx';
 
-const DocList = ({items, onCreate, onReload}) => {
+const DocList = ({items, onCreate}) => {
 
     var table = <table className="table">
         <thead>
@@ -33,8 +32,6 @@ const DocList = ({items, onCreate, onReload}) => {
                     <button className="btn btn-sm btn-default"
                             style={{marginLeft: "10px"}}
                             onClick={e => {e.preventDefault(); onCreate()}}><i className="fa fa-plus"/> Create Document</button>
-                    <button className="btn btn-sm btn-default"
-                            onClick={e => {e.preventDefault(); onReload()}}><i className="fa fa-refresh"/> Reload</button>
                     </div>
                 </h1>
             </div>
@@ -60,9 +57,6 @@ const DocumentsList = connect(
         return {
             onCreate: () => {
                 dispatch(createDocument())
-            },
-            onReload: () => {
-                dispatch(fetchDocuments())
             }
         }
     }

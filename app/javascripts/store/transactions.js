@@ -1,5 +1,5 @@
 import { loadSignature } from './signatures'
-import fetchDocuments from './fetchDocuments'
+import { setDocument } from './fetchDocuments'
 import log from 'loglevel'
 
 export function startDocTransaction(tx_id, docId) {
@@ -60,10 +60,31 @@ export function startWatcher() {
                 if (tx.type === 'signature') {
                     dispatcher(loadSignature({id: tx.documentId}, tx.signatureId))
                 } else if (tx.type === 'document') {
-                    dispatcher(fetchDocuments())
                 }
             })
         });
+    }
+}
+
+export function listenForNewDocuments() {
+    return function (dispatcher, getState) {
+        const web3 = getState().contracts.web3;
+        const contract = getState().contracts.basicSign;
+        contract.Created((err, result) => {
+            if (err !== null) {
+                log.error("Event Error", err, result);
+                return;
+            }
+            log.debug('Document Created Event', result);
+            const event = result.args;
+            const doc = {
+                id: event.id,
+                idHex: web3.toHex(event.id),
+                organizer: event.from,
+                signsCount: 0
+            };
+            dispatcher(setDocument(doc));
+        })
     }
 }
 

@@ -11,8 +11,7 @@ import { configReducers } from './configReducers';
 import { setAddress } from './config';
 import { loadAccounts } from './contract';
 import { contractReducers } from './contractReducers';
-import fetchDocuments from '../store/fetchDocuments';
-import { startWatcher } from './transactions';
+import { startWatcher, listenForNewDocuments } from './transactions';
 import transactionReducers from './transactionsReducers';
 
 const stateTransformer = (state) => {
@@ -54,6 +53,6 @@ export const store = createStore(
 
 store.dispatch(setAddress('http://localhost:8545'));
 store.dispatch(loadAccounts());
-store.dispatch(fetchDocuments());
 store.dispatch(startWatcher());
+store.dispatch(listenForNewDocuments());
 

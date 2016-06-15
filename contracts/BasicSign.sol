@@ -13,11 +13,7 @@ contract BasicSign {
     );
 
     address owner;
-
-    uint256 documentsCount;
-    mapping (uint256 => Document) documents;
-
-    mapping (uint256 => uint256) ids;
+    mapping (uint256 => Document) public documents;
 
     struct Document {
         address organizer;
@@ -37,8 +33,6 @@ contract BasicSign {
     function createDocument(uint256 nonce) returns (uint256 docId) {
         docId = generateId(nonce);
         if (documents[docId].organizer != 0) throw;
-        uint256 index = documentsCount++;
-        ids[index] = docId;
         documents[docId].organizer = msg.sender;
         Created(msg.sender, docId);
     }
@@ -55,10 +49,6 @@ contract BasicSign {
         if (doc.signs.length >= 0xFF) throw;
         uint idx = doc.signs.push(Sign(msg.sender, _type, _sign));
         Signed(msg.sender, docId, uint8(idx), _type, _sign);
-    }
-
-    function getDocumentsCount() returns (uint) {
-        return documentsCount;
     }
 
     function getDocumentDetails(uint256 docId) returns (address organizer, uint count) {
@@ -85,10 +75,6 @@ contract BasicSign {
 
     function generateId(uint256 nonce) returns (uint256) {
         return uint256(sha3(msg.sender, nonce));
-    }
-
-    function getIdAtIndex(uint256 index) returns (uint256) {
-        return ids[index];
     }
 
 }
