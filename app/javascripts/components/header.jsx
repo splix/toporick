@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import log from 'loglevel';
 import Immutable from 'immutable';
 
-const Render = ({account, accounts, selectAccount}) => {
-
+const Render = ({addr, account, accounts, selectAccount, setAddr}) => {
     return (
         <nav className="navbar navbar-default">
                 <div className="navbar-collapse" >
@@ -13,11 +12,17 @@ const Render = ({account, accounts, selectAccount}) => {
                     </div>
                     <form className="navbar-form navbar-right" role="search">
                         <div className="form-group form-group-sm">
-                            <label for="select-account">Account</label>
-                            <select id="select-account" className="form-control" onChange={(e) => {e.preventDefault(); selectAccount(e.target.value)}}>
+                            <input id="select-addr" type="text" className="form-control"
+                                   value={addr}/>
+                        </div>
+                        <div className="form-group form-group-sm">
+                            <label htmlFor="select-account">Account</label>
+                            <select id="select-account"
+                                    className="form-control"
+                                    onChange={(e) => {e.preventDefault(); selectAccount(e.target.value)}}
+                                    value={account}>
                                 {accounts.map((acc) => {
-                                    var selected = acc === account;
-                                    return <option selected={selected}>{acc}</option>
+                                    return <option value={acc} key={acc}>{acc}</option>
                                 })}
                             </select>
                         </div>
@@ -31,7 +36,8 @@ const Header = connect(
     (state, ownProps) => {
         return {
             accounts: state.config.get('accounts', []),
-            account: state.config.get('account', null)
+            account: state.config.get('account', null),
+            addr: state.config.get('addr', '')
         }
     },
     (dispatch, ownProps) => {
@@ -39,6 +45,10 @@ const Header = connect(
             selectAccount: (acc) => dispatch({
                 type: 'CONFIG/SELECT_ACCOUNT',
                 account: acc
+            }),
+            setAddr: (addr) => dispatch({
+                type: 'CONFIG/SET_ADDR',
+                addr: addr
             })
         }
     }
