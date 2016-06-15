@@ -69,6 +69,13 @@ Notice that `type` and `value` could be anything, not restricted to any particul
 There're a standalone UI to operate this contracts, that can be run on any computer with access to Ethereum node
 via RPC. The app is built using ConsenSys Truffle and React + Redux.
 
+=== Online & Mist
+
+DApp is deployed to following url: https://toporickdapp.appspot.com/dapp/index.html
+
+You can use this URL to play with app. It will expect that Ethereum JSON RPC is answering on http://localhost:8545 and
+XMLHttpRequests are allowed to this address.
+
 === Build and Run UI
 
 .Install requirements
