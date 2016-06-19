@@ -71,7 +71,7 @@ via RPC. The app is built using ConsenSys Truffle and React + Redux.
 
 === Online & Mist
 
-DApp is deployed to following url: https://toporickdapp.appspot.com/dapp/
+DApp is deployed to following url: https://toporick.com/dapp/
 
 You can use this URL to play with app. It will expect that Ethereum JSON RPC is answering on http://localhost:8545 and
 XMLHttpRequests are allowed to this address.
