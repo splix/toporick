@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Tooltip, OverlayTrigger, Modal, Button } from 'react-bootstrap';
+import SettingsModal from './settingsModal.jsx';
+import { showModal } from '../store/screens'
 
-
-const Render = ({addr, account}) => {
+const Render = ({addr, account, showSettings}) => {
 
     const shortAcct = (acct) => {
         if (acct == null) {
@@ -26,9 +27,11 @@ const Render = ({addr, account}) => {
                         <li><i className="fa fa-exchange"/></li>
                         <li>{addr}</li>
                         <li><OverlayTrigger placement="bottom" overlay={addrTooltip}><span>{shortAcct(account)}</span></OverlayTrigger></li>
-                        <li><button className="btn btn-default"><i className="fa fa-bars"/></button></li>
+                        <li><button className="btn btn-default" onClick={showSettings}><i className="fa fa-bars"/></button></li>
                     </ul>
                 </div>
+
+                <SettingsModal />
         </nav>
     )
 };
@@ -42,6 +45,9 @@ const Header = connect(
     },
     (dispatch, ownProps) => {
         return {
+            showSettings: () => {
+                dispatch(showModal('settings'));
+            }
         }
     }
 )(Render);

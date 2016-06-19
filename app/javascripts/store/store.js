@@ -13,13 +13,15 @@ import { loadAccounts } from './contract';
 import { contractReducers } from './contractReducers';
 import { startWatcher, listenForNewDocuments } from './transactions';
 import transactionReducers from './transactionsReducers';
+import screensReducers from './screensReducers';
 
 const stateTransformer = (state) => {
     return {
         app: state.app.toJS(), 
         form: state.form,
         config: state.config.toJS(),
-        contracts: state.contracts
+        contracts: state.contracts,
+        screen: state.screen.toJS()
     };
 };
 
@@ -40,7 +42,8 @@ const reducers = {
     app: appReducers,
     form: formReducer,
     config: configReducers,
-    contracts: contractReducers
+    contracts: contractReducers,
+    screen: screensReducers
 };
 
 export const store = createStore(
