@@ -8,14 +8,14 @@ based on references to the off-chain digital documents.
 
 Roadmap:
 
-  * [x] publish signatures to blockchain - Basic Signature
+  * [x] publish signatures to blockchain (Basic Signature Contract)
+  * [x] publish UI online
+  * [ ] integrate into Mist
   * [ ] add signatures from multiple parties
-  * [ ] publish UI
   * [ ] verification rules for a document
   ** [ ] timeframe
   ** [ ] same signatures from multiple parties
   ** [ ] required types of signatures
-  * [ ] integrate into Mist
   * [ ] command line tools
 
 == Basic Signature contract
@@ -74,7 +74,17 @@ via RPC. The app is built using ConsenSys Truffle and React + Redux.
 DApp is deployed to following url: https://toporick.com/dapp/
 
 You can use this URL to play with app. It will expect that Ethereum JSON RPC is answering on http://localhost:8545 and
-XMLHttpRequests are allowed to this address.
+XMLHttpRequests are allowed to this address. There is one issue though: both of them must use same HTTP Schema. And
+by default you cannot start Ethereum JSON RCP under `https://`. You have a choice: setup a secured frontend, or use plain
+http for both. First is preferred.
+
+For later you simply have to use http://toporick.com/dapp/ and run Geth as following:
+
+----
+geth --rpc --rpccorsdomain http://toporick.com
+----
+
+But please be careful, http connection is insecure an who knows who is listening your traffic.
 
 === Build and Run UI
 
