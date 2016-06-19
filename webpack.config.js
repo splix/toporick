@@ -58,6 +58,7 @@ var config = {
         extensions: ['', '.js'],
         alias: {
             'jquery': 'jquery/dist/jquery.js',
+            'react-bootstrap': 'react-bootstrap/dist/react-bootstrap.js',
             'babel-polyfill': path.join(__dirname, 'babel-polyfill/dist/polyfill.js'),
             'contracts': path.join(__dirname, 'environments/'+ environment + '/contracts')
         }

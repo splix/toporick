@@ -1,6 +1,8 @@
 import 'bootstrap/less/bootstrap.less';
 import 'font-awesome/less/font-awesome.less';
+
 import '../stylesheets/main.scss';
+import '../stylesheets/header.scss';
 
 import React from 'react';
 import ReactDom from 'react-dom';

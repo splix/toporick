@@ -1,0 +1,18 @@
+.navbar {
+  .settings {
+    li {
+      padding: 15px 10px;
+
+      button {
+        opacity: 0;
+        margin-top: -5px;
+      }
+    }
+
+    &:hover {
+      button {
+        opacity: 1;
+      }
+    }
+  }
+}
