@@ -11,6 +11,6 @@ addons:
       - g++-4.8
 before_script:
   - ./node_modules/ethereumjs-testrpc/bin/testrpc &
-script: node ./node_modules/truffle/cli.js test
+script: node ./node_modules/truffle/cli.js test -e test
 after_script:
   - killall node
