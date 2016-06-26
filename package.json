@@ -1,5 +1,5 @@
 {
-  "name": "eth-signatures",
+  "name": "toporick",
   "private": false,
   "author": "Igor Artamonov <igor@artamonov.ru>",
   "dependencies": {
@@ -64,7 +64,7 @@
   "devDependencies": {
   },
   "engines": {
-    "node": "0.12",
-    "npm": "2.14.3"
+    "node": "4.2.1",
+    "npm": "3.6.0"
   }
 }

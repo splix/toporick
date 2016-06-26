@@ -1,5 +1,6 @@
 language: node_js
+node_js:
+  - "4.2.x"
 before_script:
-  - npm install
   - ./node_modules/ethereumjs-testrpc/bin/testrpc
 script: node ./node_modules/truffle/cli.js test
