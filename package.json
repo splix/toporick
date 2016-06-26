@@ -1,7 +1,14 @@
 {
   "name": "toporick",
+  "description": "Ethereum DApp for agreements based on signatures of off-chain entities",
+  "homepage": "https://toporick.com",
   "private": false,
   "author": "Igor Artamonov <igor@artamonov.ru>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/splix/toporick.git"
+  },
   "dependencies": {
     "autoprefixer": "5.1.1",
     "autoprefixer-loader": "2.0.0",
