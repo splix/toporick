@@ -23,6 +23,17 @@ const DocList = ({items, onCreate}) => {
         </tbody>
     </table>;
 
+    var msg = '';
+    if (items.length > 0) {
+        msg = 'This list contains only documents that were created after dapp startup. ' +
+            'Toporic DApp watches for new documents in the blockchain and adds it to the list. ' +
+            'Any documents that were created before the moment when you opened the app aren\'t listed here'
+    } else {
+        msg = 'This list will contain documents that will be created during current session. ' +
+            'Toporic DApp watches for new documents in the blockchain and adds it to the list. ' +
+            'Any documents that were created before the moment when you opened the app aren\'t listed here'
+    }
+
     return (
         <div className="row">
             <div className="col-md-12">
@@ -30,6 +41,11 @@ const DocList = ({items, onCreate}) => {
             </div>
             <div className="col-md-12">
                 {table}
+            </div>
+            <div className="col-md-10 col-md-offset-1">
+                <p className="alert alert-info">
+                    {msg}
+                </p>
             </div>
         </div>
     )
