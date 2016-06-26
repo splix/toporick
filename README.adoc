@@ -1,5 +1,7 @@
 = Toporick
 
+image:https://travis-ci.org/splix/toporick.svg?branch=master["Build Status", link="https://travis-ci.org/splix/toporick"]
+
 Toporick is an Ethereum DApp for making agreements based on signatures of off-chain entities in the blockchain.
 This can be signatures of digital documents, images, PDF or any other file.
 
