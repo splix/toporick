@@ -4,6 +4,7 @@ import log from 'loglevel';
 
 import { showDocument } from '../store/show'
 import { loadSignatures } from '../store/signatures'
+import { showScreen } from '../store/screens'
 
 const DocMini = ({doc, onSelect}) => {
     return (
@@ -26,6 +27,7 @@ const DocumentsMini = connect(
         return {
             onSelect: (doc) => {
                 log.info('selected', doc);
+                dispatch(showScreen('doc-details'));
                 dispatch(showDocument(doc));
                 dispatch(loadSignatures(doc))
             }

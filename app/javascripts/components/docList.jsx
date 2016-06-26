@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
-import createDocument from '../store/createDocument';
+import { generateId } from '../store/createDocument';
 
 import log from 'loglevel';
 
 import DocMini from './docMini.jsx';
+import { showScreen } from '../store/screens'
 
 const DocList = ({items, onCreate}) => {
 
@@ -56,7 +57,8 @@ const DocumentsList = connect(
     (dispatch, ownProps) => {
         return {
             onCreate: () => {
-                dispatch(createDocument())
+                dispatch(showScreen('create-doc'));
+                dispatch(generateId());
             }
         }
     }

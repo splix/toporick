@@ -10,3 +10,10 @@ export function closeModal() {
         type: 'MODAL/CLOSE'
     }
 }
+
+export function showScreen(id) {
+    return {
+        type: 'SCREEN/SHOW',
+        id: id
+    }
+}

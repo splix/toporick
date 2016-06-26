@@ -3,11 +3,12 @@ import { Provider, connect } from 'react-redux'
 import log from 'loglevel';
 
 import DocList from './docList.jsx';
-import DocDetails from './docDetails.jsx';
+import MainScreen from './mainScreen.jsx';
+
 import Header from './header.jsx';
 import {store} from '../store/store.js';
 
-const Render = () => {
+const App = () => {
 
     return (
         <Provider store={store}>
@@ -22,7 +23,7 @@ const Render = () => {
             </div>
 
             <div className="container body">
-                <DocDetails />
+                <MainScreen />
                 <DocList />
             </div>
 
@@ -41,4 +42,4 @@ const Render = () => {
     )
 };
 
-export default Render;
+export default App;

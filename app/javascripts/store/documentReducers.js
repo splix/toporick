@@ -66,12 +66,26 @@ function setDocument(state, action) {
     }
 }
 
+function setNexId(state, action) {
+    switch (action.type) {
+        case 'DOCUMENT_CREATE/SET_ID':
+            return state.update('docCreate', (docCreate) =>
+                docCreate
+                    .set('nonce', action.nonce)
+                    .set('id', action.id)
+            );
+        default:
+            return state
+    }
+}
+
 const documentsReducers = function(state, action) {
     state = state || initialState;
     state = loadingItems(state, action);
     state = setItems(state, action);
     state = setDocument(state, action);
     state = incSignsCount(state, action);
+    state = setNexId(state, action);
     return state
 };
 

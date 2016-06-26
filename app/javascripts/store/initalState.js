@@ -15,6 +15,11 @@ export const initialState = Immutable.fromJS({
         loaded: false,
         document: null
     },
+    docCreate: {
+        nonce: null,
+        id: null,
+        signatures: []
+    },
     docList: {
         loaded: false,
         loading: false,
