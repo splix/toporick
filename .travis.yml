@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - "6"
+before_install:
+  - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  - sudo apt-get install -y build-essential
 before_script:
   - ./node_modules/ethereumjs-testrpc/bin/testrpc
 script: node ./node_modules/truffle/cli.js test
