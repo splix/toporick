@@ -25,7 +25,7 @@ const Render = ({nonce, docId, doCreate}) => {
 
                     <div className="form-group">
                         <div className="col-sm-10 col-sm-offset-2">
-                            <button className="btn btn-primary" onClick={doCreate}>Create Document</button>
+                            <button className="btn btn-primary" onClick={doCreate}><i className="fa fa-save"/> Send to Blockchain</button>
                         </div>
                     </div>
                 </form>
