@@ -14,6 +14,7 @@ import { contractReducers } from './contractReducers';
 import { startWatcher, listenForNewDocuments } from './transactions';
 import transactionReducers from './transactionsReducers';
 import screensReducers from './screensReducers';
+import { showScreen } from './screens';
 
 const stateTransformer = (state) => {
     return {
@@ -58,4 +59,5 @@ store.dispatch(setAddress('http://localhost:8545'));
 store.dispatch(loadAccounts());
 store.dispatch(startWatcher());
 store.dispatch(listenForNewDocuments());
+store.dispatch(showScreen('start'));
 

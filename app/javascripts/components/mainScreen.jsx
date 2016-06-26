@@ -4,6 +4,7 @@ import log from 'loglevel';
 
 import DocDetails from './docDetails.jsx';
 import CreateDoc from './createDocScreen.jsx';
+import StartScreen from './startScreen.jsx';
 
 const Render = ({screen}) => {
 
@@ -12,6 +13,8 @@ const Render = ({screen}) => {
         screenElement = <DocDetails/>;
     } else if (screen === 'create-doc') {
         screenElement = <CreateDoc/>;
+    } else if (screen === 'start') {
+        screenElement = <StartScreen/>;
     }
 
     return (

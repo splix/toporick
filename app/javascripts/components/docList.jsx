@@ -1,11 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { generateId } from '../store/createDocument';
 
 import log from 'loglevel';
 
 import DocMini from './docMini.jsx';
-import { showScreen } from '../store/screens'
 
 const DocList = ({items, onCreate}) => {
 
@@ -28,13 +26,7 @@ const DocList = ({items, onCreate}) => {
     return (
         <div className="row">
             <div className="col-md-12">
-                <h1>Documents
-                    <div className="btn-group">
-                    <button className="btn btn-sm btn-default"
-                            style={{marginLeft: "10px"}}
-                            onClick={e => {e.preventDefault(); onCreate()}}><i className="fa fa-plus"/> Create Document</button>
-                    </div>
-                </h1>
+                <h1>Latest Documents</h1>
             </div>
             <div className="col-md-12">
                 {table}
@@ -56,10 +48,6 @@ const DocumentsList = connect(
     },
     (dispatch, ownProps) => {
         return {
-            onCreate: () => {
-                dispatch(showScreen('create-doc'));
-                dispatch(generateId());
-            }
         }
     }
 )(DocList);
