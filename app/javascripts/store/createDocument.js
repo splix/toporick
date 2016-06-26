@@ -1,5 +1,6 @@
 import log from 'loglevel';
 import { startDocTransaction } from './transactions';
+import { createSignature } from './signatures';
 
 const instance = Math.round(100000000 * Math.random()).toString(16);
 var sequence = 1000;
@@ -28,13 +29,39 @@ export function createDocument() {
         const web3 = getState().contracts.web3;
         const account = getState().config.get('account');
         const nonce = getState().app.getIn(['docCreate', 'nonce']);
-        log.debug('create doc', nonce, account);
+        const docId = getState().app.getIn(['docCreate', 'id']);
+        const signatures = getState().app.getIn(['docCreate', 'signatures']).toJS();
+        log.debug('create doc', nonce, account, signatures);
         contract.createDocument(web3.toBigNumber(nonce), {from: account}).then((tx_id) => {
             log.info('document created', tx_id);
             contract.generateId.call(web3.toBigNumber(nonce)).then((docId) => {
                 dispatch(startDocTransaction(tx_id, docId))
             });
+            signatures.map((sign, idx) => {
+                const doc = {
+                    id: docId,
+                    signsCount: idx
+                };
+                dispatch(createSignature(
+                    web3.fromAscii(sign.type, 16), sign.value, doc
+                ))
+            })
         });
     }
     
+}
+
+export function addSignature(type, value) {
+    return {
+        type: 'DOCUMENT_CREATE/ADD_SIGNATURE',
+        sign_type: type,
+        sign_value: value
+    }
+}
+
+export function removeSignature(idx) {
+    return {
+        type: 'DOCUMENT_CREATE/REMOVE_SIGNATURE',
+        index: idx
+    }
 }

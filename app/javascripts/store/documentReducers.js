@@ -79,6 +79,32 @@ function setNexId(state, action) {
     }
 }
 
+function addSignatureForNew(state, action) {
+    switch (action.type) {
+        case 'DOCUMENT_CREATE/ADD_SIGNATURE':
+            const value = Immutable.fromJS({
+                type: action.sign_type,
+                value: action.sign_value
+            }); 
+            return state.updateIn(['docCreate', 'signatures'], (signatures) =>
+                signatures.push(value)
+            );
+        default:
+            return state
+    }
+}
+
+function removeSignatureForNew(state, action) {
+    switch (action.type) {
+        case 'DOCUMENT_CREATE/REMOVE_SIGNATURE':
+            return state.updateIn(['docCreate', 'signatures'], (signatures) =>
+                signatures.remove(action.index)
+            );
+        default:
+            return state
+    }
+}
+
 const documentsReducers = function(state, action) {
     state = state || initialState;
     state = loadingItems(state, action);
@@ -86,6 +112,8 @@ const documentsReducers = function(state, action) {
     state = setDocument(state, action);
     state = incSignsCount(state, action);
     state = setNexId(state, action);
+    state = addSignatureForNew(state, action);
+    state = removeSignatureForNew(state, action);
     return state
 };
 

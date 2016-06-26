@@ -62,15 +62,15 @@ var AddSign = connect(
 AddSign = reduxForm({
     form: 'addSignature',
     fields: ['type', 'sign'],
-    onSubmit: function(inputs, dispatch) {
-        log.debug('onsubmit', arguments);
-        var typeStr = inputs.type;
-        var signStr = inputs.sign;
-        var type = web3.fromAscii(typeStr, 16);
-        var sign = '0x'+signStr; //'0x1245'; //[0x12, 0x45]; //web3.toBigNumber('0x' + signStr);
-        log.debug('add signature', typeStr, type, signStr, sign);
-        dispatch(createSignature(type, sign))
-    },
+    // onSubmit: function(inputs, dispatch) {
+    //     log.debug('onsubmit', arguments);
+    //     var typeStr = inputs.type;
+    //     var signStr = inputs.sign;
+    //     var type = web3.fromAscii(typeStr, 16);
+    //     var sign = '0x'+signStr; //'0x1245'; //[0x12, 0x45]; //web3.toBigNumber('0x' + signStr);
+    //     log.debug('add signature', typeStr, type, signStr, sign);
+    //     dispatch(createSignature(type, sign))
+    // },
     validate: (values) => {
         const errors = {};
         if (!values.type) {

@@ -48,12 +48,12 @@ export function loadSignatures(doc) {
     };
 }
 
-export function createSignature(typeOriginal, sign) {
+export function createSignature(typeOriginal, sign, doc) {
 
     return function (dispatch, getState) {
         const web3 = getState().contracts.web3;
         const type = web3.toBigNumber(typeOriginal);
-        const doc = getState().app.getIn(['doc', 'document']).toJS();
+        const doc = doc || getState().app.getIn(['doc', 'document']).toJS();
         const docId = doc.id;
         const contract = getState().contracts.basicSign;
         const account = getState().config.get('account');
