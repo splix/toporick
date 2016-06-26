@@ -5,7 +5,7 @@ import log from 'loglevel';
 
 import DocMini from './docMini.jsx';
 
-const DocList = ({items, onCreate}) => {
+const DocList = ({items}) => {
 
     var table = <table className="table">
         <thead>
@@ -52,8 +52,7 @@ const DocList = ({items, onCreate}) => {
 };
 
 DocList.propTypes = {
-    items: PropTypes.array.isRequired,
-    onCreate: PropTypes.func.isRequired
+    items: PropTypes.array.isRequired
 };
 
 const DocumentsList = connect(
