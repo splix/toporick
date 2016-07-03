@@ -114,8 +114,8 @@ truffle serve
 
 Here we are
 
-image::docs/screen-start-chrome.png
-image::docs/screen-add-chrome.png
+image::docs/screen-start-chrome.png[Start Screen]
+image::docs/screen-add-chrome.png[Create Document]
 
 == Licence
 
