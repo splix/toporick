@@ -73,9 +73,13 @@ const CreateDoc = connect(
             },
             doAddSignature: (inputs, dispatch) => {
                 log.debug('add signature', inputs);
+                var sign = inputs.sign;
+                if (!sign.startsWith('0x')) {
+                    sign = '0x' + sign;
+                }
                 dispatch(addSignature(
                     inputs.type,
-                    '0x' + inputs.sign
+                    sign
                 ))
             },
             doRemoveSignature: (idx) => {

@@ -80,7 +80,7 @@ AddSign = reduxForm({
         }
         if (!values.sign) {
             errors.sign = 'Required'
-        } else if (!/^[a-fA-F0-9]+$/i.test(values.sign)) {
+        } else if (!/^(0x)?[a-fA-F0-9]+$/i.test(values.sign)) {
             errors.sign = 'Invalid HEX value'
         }
         return errors
