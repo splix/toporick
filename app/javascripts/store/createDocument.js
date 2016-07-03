@@ -1,6 +1,7 @@
 import log from 'loglevel';
 import { startDocTransaction } from './transactions';
 import { createSignature } from './signatures';
+import { setDocument } from './fetchDocuments';
 
 const instance = Math.round(100000000 * Math.random()).toString(16);
 var sequence = 1000;
@@ -35,17 +36,24 @@ export function createDocument() {
         contract.createDocument(web3.toBigNumber(nonce), {from: account}).then((tx_id) => {
             log.info('document created', tx_id);
             contract.generateId.call(web3.toBigNumber(nonce)).then((docId) => {
-                dispatch(startDocTransaction(tx_id, docId))
-            });
-            signatures.map((sign, idx) => {
+                dispatch(startDocTransaction(tx_id, docId));
                 const doc = {
                     id: docId,
-                    signsCount: idx
+                    idHex: web3.toHex(docId),
+                    organizer: account,
+                    signsCount: 0
                 };
-                dispatch(createSignature(
-                    web3.fromAscii(sign.type, 16), sign.value, doc
-                ))
-            })
+                dispatch(setDocument(doc));
+                signatures.map((sign, idx) => {
+                    const doc = {
+                        id: docId,
+                        signsCount: idx
+                    };
+                    dispatch(createSignature(
+                        web3.fromAscii(sign.type, 16), sign.value, doc
+                    ))
+                })
+            });
         });
     }
     
