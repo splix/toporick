@@ -6,21 +6,24 @@ import _ from 'lodash';
 
 const initialState = {
     web3: null,
+    mist: null,
+    provided: false,
     basicSign: null,
     filter: null
 };
 
-function connectWeb3(state, action) {
+function setupWeb3(state, action) {
     switch (action.type) {
-        case 'CONTRACT/SET_WEB3':
-            const web3 = new Web3();
-            const addr = action.addr;
-            Pudding.setWeb3(web3);
-            web3.setProvider(new web3.providers.HttpProvider(addr));
+        case 'CONTRACT/SETUP_WEB3':
+            var currentWeb3 = action.web3;
+            Pudding.setWeb3(currentWeb3);
             BasicSign.load(Pudding);
-
-            return _.assign(initialState, state,
-                {web3: web3, basicSign: BasicSign.deployed()});
+            return _.assign(initialState, state, {
+                web3: currentWeb3,
+                provided: action.provided,
+                basicSign: BasicSign.deployed(),
+                mist: action.mist
+            });
         default:
             return state
     }
@@ -41,7 +44,7 @@ function setFilter(state, action) {
 
 export const contractReducers = function(state, action) {
     state = state || initialState;
-    state = connectWeb3(state, action);
+    state = setupWeb3(state, action);
     state = setFilter(state, action);
     return state;
 };

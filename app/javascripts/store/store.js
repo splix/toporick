@@ -8,26 +8,31 @@ import { initialState } from './initalState'
 import Immutable from 'immutable'
 import {reducer as formReducer} from 'redux-form';
 import { configReducers } from './configReducers';
-import { setAddress } from './config';
-import { loadAccounts } from './contract';
+import { setAddress, setEnvironment } from './config';
+import { loadAccounts, setupWeb3 } from './contract';
 import { contractReducers } from './contractReducers';
 import { startWatcher, listenForNewDocuments } from './transactions';
 import transactionReducers from './transactionsReducers';
 import screensReducers from './screensReducers';
 import { showScreen } from './screens';
+import _ from 'lodash';
 
 const stateTransformer = (state) => {
     return {
         app: state.app.toJS(), 
         form: state.form,
         config: state.config.toJS(),
-        contracts: state.contracts,
+        contracts: _.omit(state.contracts, ['web3', 'mist']),
         screen: state.screen.toJS()
     };
 };
 
+const actionTransformer = (action) => {
+    return _.omit(action, ['web3', 'mist'])
+};
+
 const loggerMiddleware = createLogger({
-    stateTransformer
+    stateTransformer, actionTransformer
 });
 
 const appReducers = function(state, action) {
@@ -55,7 +60,14 @@ export const store = createStore(
     )
 );
 
-store.dispatch(setAddress('http://localhost:8545'));
+if (typeof mist !== 'undefined') { //provided byt mist
+    store.dispatch(setEnvironment('mist'));
+} else if (typeof web3 !== 'undefined') { //provided by metamask
+    store.dispatch(setEnvironment('metamask'));
+} else {
+    store.dispatch(setAddress('http://localhost:8545'));
+}
+store.dispatch(setupWeb3(window.web3, window.mist));
 store.dispatch(loadAccounts());
 store.dispatch(startWatcher());
 store.dispatch(listenForNewDocuments());

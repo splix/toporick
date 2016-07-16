@@ -4,7 +4,11 @@ import { Tooltip, OverlayTrigger, Modal, Button } from 'react-bootstrap';
 import SettingsModal from './settingsModal.jsx';
 import { showModal } from '../store/screens'
 
-const Render = ({addr, account, showSettings}) => {
+const Render = ({addr, account, env, showSettings}) => {
+
+    if (env !== 'web') {
+        return (<div/>);
+    }
 
     const shortAcct = (acct) => {
         if (acct == null) {
@@ -40,7 +44,8 @@ const Header = connect(
     (state, ownProps) => {
         return {
             account: state.config.get('account', null),
-            addr: state.config.get('addr', '')
+            addr: state.config.get('addr', ''),
+            env: state.config.get('environment')
         }
     },
     (dispatch, ownProps) => {
