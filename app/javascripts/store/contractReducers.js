@@ -9,20 +9,27 @@ const initialState = {
     mist: null,
     provided: false,
     basicSign: null,
-    filter: null
+    filter: null,
+    ready: false
 };
 
 function setupWeb3(state, action) {
     switch (action.type) {
         case 'CONTRACT/SETUP_WEB3':
             var currentWeb3 = action.web3;
-            Pudding.setWeb3(currentWeb3);
-            BasicSign.load(Pudding);
+            var contract = null;
+            const ready = typeof currentWeb3 !== 'undefined';
+            if (ready) {
+                Pudding.setWeb3(currentWeb3);
+                BasicSign.load(Pudding);
+                contract = BasicSign.deployed();
+            }
             return _.assign(initialState, state, {
                 web3: currentWeb3,
                 provided: action.provided,
-                basicSign: BasicSign.deployed(),
-                mist: action.mist
+                basicSign: contract,
+                mist: action.mist,
+                ready: ready
             });
         default:
             return state

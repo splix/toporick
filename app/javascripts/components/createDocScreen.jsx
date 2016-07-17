@@ -8,7 +8,16 @@ import AddSign from './addSign.jsx';
 
 const web3 = new Web3();
 
-const Render = ({nonce, docId, signatures, doCreate, doAddSignature, doRemoveSignature}) => {
+const Render = ({nonce, docId, signatures, canSend, doCreate, doAddSignature, doRemoveSignature}) => {
+
+    var submit = null;
+    if (canSend) {
+        submit = <button className="btn btn-primary" onClick={doCreate}><i className="fa fa-save"/> Send to Blockchain</button>
+    } else {
+        submit = <div className="alert alert-info">
+            DApp isn't connected to Ethereum or all accounts are locked
+        </div>
+    }
 
     return (
         <div className="create-doc">
@@ -48,7 +57,7 @@ const Render = ({nonce, docId, signatures, doCreate, doAddSignature, doRemoveSig
 
             <div className="row">
                 <div className="col-sm-10 col-sm-offset-1 text-center">
-                    <button className="btn btn-primary" onClick={doCreate}><i className="fa fa-save"/> Send to Blockchain</button>
+                    {submit}
                 </div>
             </div>
 
@@ -62,7 +71,8 @@ const CreateDoc = connect(
         return {
             nonce: state.app.getIn(['docCreate', 'nonce']),
             docId: state.app.getIn(['docCreate', 'id']),
-            signatures: state.app.getIn(['docCreate', 'signatures']).toJS() 
+            signatures: state.app.getIn(['docCreate', 'signatures']).toJS(),
+            canSend: state.contracts.ready && state.config.get('account') !== null
         }
     },
     (dispatch, ownProps) => {
